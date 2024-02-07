@@ -1,0 +1,9 @@
+version: "2.1"
+
+services:
+  ms-sql-server:
+    build:
+      context: .
+      dockerfile: ./dockerfile
+    ports:
+      - 1438:1433

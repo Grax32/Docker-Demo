@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/mssql/server:2022-latest
 
 # Set the environment variables for SQL Server
 ENV ACCEPT_EULA=Y
-ENV MSSQL_SA_PASSWORD=YourStrongPassword99!
+ENV MSSQL_SA_PASSWORD=YourStrongPassword99@
 
 # Create a directory for SQL scripts
 WORKDIR /usr/src/sql
@@ -12,6 +12,8 @@ WORKDIR /usr/src/sql
 COPY initialize-my-database.sql .
 COPY --chmod=+x init-db-during-build.sh .
 
+USER mssql
+
 # Start the db server and run the SQL script
 RUN ./init-db-during-build.sh
 
@@ -19,4 +21,4 @@ RUN ./init-db-during-build.sh
 EXPOSE 1433
 
 # Start SQL Server when the container starts
-CMD ["/opt/mssql/bin/sqlservr"]
+ENTRYPOINT [ "/opt/mssql/bin/sqlservr" ]

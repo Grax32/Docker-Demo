@@ -11,11 +11,10 @@ fi
 
 # Function to check if SQL Server is ready
 wait_for_sql_server() {
-    echo "Waiting for SQL Server to be ready..."
-    while ! /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P '$mssql_sa_password' -Q "SELECT 1;" &> /dev/null; do
-        sleep 10
+    while ! /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$mssql_sa_password" -Q "SELECT 1;" &> /dev/null; do
+        sleep 5
 
-        echo .
+        echo "Sleeping for 5 seconds..."
         
         # Check if the program is running
         if ! pid=$(pidof sqlservr); then
@@ -28,12 +27,20 @@ wait_for_sql_server() {
 
 echo "Starting the database"
 # Start SQL Server service during the build
-/opt/mssql/bin/sqlservr
+/opt/mssql/bin/sqlservr &
 
 # Call the function to wait for SQL Server to be ready
 echo "Waiting for SQL Server to be ready..."
 wait_for_sql_server
 
-echo "SQL Server is ready."
+echo "Running setup script."
 # Run the setup script to create the DB and the schema in the DB
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $mssql_sa_password -d master -i initialize-my-database.sql
+if ! /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$mssql_sa_password" -d master -b -i initialize-my-database.sql; then
+    echo "Error: SQL script failed to run."
+    exit 1
+fi
+
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$mssql_sa_password" -Q "SHUTDOWN" &> /dev/null
+
+echo "SQL Script complete."
+sleep 2
