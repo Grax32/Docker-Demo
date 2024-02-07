@@ -35,7 +35,7 @@ public class IndexModel : PageModel
             // Read the data and populate the list of users
             while (reader.Read())
             {
-                Users.Add((reader.GetString(1), reader.GetString(0)));
+                Users.Add((reader.GetString(0), reader.GetInt32(1).ToString()));
             }
 
             // Close the reader and the connection
