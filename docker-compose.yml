@@ -1,13 +1,10 @@
 version: "2.1"
 
 services:
-  api-server:
+  web-site:
     extends:
       file: ./web-site/docker-compose.yml
       service: web-site
-    depends_on:
-      ms-sql-server:
-        condition: service_healthy
   ms-sql-server:
     extends: 
       file: ./ms-sql-server/docker-compose.yml

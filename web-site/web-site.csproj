@@ -7,4 +7,8 @@
     <RootNamespace>web_site</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="microsoft.data.sqlclient" Version="5.1.5" />
+  </ItemGroup>
+
 </Project>
