@@ -1,11 +1,17 @@
 version: "2.1"
 
 services:
-  web-site:
-    extends:
-      file: ./web-site/docker-compose.yml
-      service: web-site
+
   ms-sql-server:
-    extends: 
-      file: ./ms-sql-server/docker-compose.yml
-      service: ms-sql-server
+    build:
+      context: ./ms-sql-server
+      dockerfile: ./dockerfile
+    ports:
+      - 1438:1433
+
+  web-site:
+    build:
+      context: ./web-site
+      dockerfile: ./dockerfile
+    ports:
+      - 9000:8842

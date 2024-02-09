@@ -1,9 +1,0 @@
-version: "2.1"
-
-services:
-  web-site:
-    build:
-      context: .
-      dockerfile: ./dockerfile
-    ports:
-      - 9000:8842
