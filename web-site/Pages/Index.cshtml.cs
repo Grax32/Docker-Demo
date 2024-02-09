@@ -27,7 +27,7 @@ public class IndexModel : PageModel
 
             // Create a SQL command to query the database
             string query = "SELECT Name,Id FROM YourTableName";
-            SqlCommand command = new SqlCommand(query, connection);
+            SqlCommand command = new (query, connection);
 
             // Execute the command and retrieve the data
             SqlDataReader reader = command.ExecuteReader();
